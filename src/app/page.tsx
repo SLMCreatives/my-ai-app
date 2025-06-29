@@ -2,7 +2,6 @@ import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
-  CardDescription,
   CardFooter,
   CardHeader,
   CardTitle
@@ -32,55 +31,48 @@ export default function Home() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <Card>
             <CardHeader>
-              <CardTitle>Event Copy Writer</CardTitle>
-              <CardDescription>
-                Write a blog post for UNITAR campus event
-              </CardDescription>
+              <CardTitle>Campus Event</CardTitle>
             </CardHeader>
             <CardContent>
-              <p>Write a blog post for UNITAR campus event</p>
+              <p className="text-md italic text-muted-foreground">
+                Write a blog post for UNITAR campus event.
+              </p>
             </CardContent>
             <CardFooter>
-              <Button className="w-full" asChild>
+              <Button className="w-fit" variant="link" asChild>
                 <Link href="/blog-writer">
-                  Go To Generator <ChevronRight className="ml-2" />
+                  Generate Post <ChevronRight className="ml-2" />
                 </Link>
               </Button>
             </CardFooter>
           </Card>
           <Card>
             <CardHeader>
-              <CardTitle>Campaign Copy Writer</CardTitle>
-              <CardDescription>
-                Write a marketing post for UNITAR campus event
-              </CardDescription>
+              <CardTitle>Campaign</CardTitle>
             </CardHeader>
             <CardContent>
-              <p>Write a marketing post for UNITAR campus event</p>
+              <p className="text-md italic text-muted-foreground">
+                Write a campaign post.
+              </p>
             </CardContent>
             <CardFooter>
-              <Button className="w-full" disabled asChild>
-                <Link href="#">
-                  Go To Generator <ChevronRight className="ml-2" />{" "}
-                </Link>
+              <Button className="w-fit" variant="link" disabled>
+                Coming Soon <ChevronRight className="" />
               </Button>
             </CardFooter>
           </Card>
           <Card>
             <CardHeader>
-              <CardTitle>Lifestyle Copy Writer</CardTitle>
-              <CardDescription>
+              <CardTitle>Lifestyle</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p className="text-md italic text-muted-foreground">
                 Write a lifestyle post for UNITAR website
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <p>Write a lifestyle post for UNITAR website</p>
+              </p>
             </CardContent>
             <CardFooter>
-              <Button className="w-full" disabled asChild>
-                <Link href="#">
-                  Go To Generator <ChevronRight className="ml-2" />
-                </Link>
+              <Button className="w-fit" variant="link" disabled>
+                Coming Soon <ChevronRight className="" />
               </Button>
             </CardFooter>
           </Card>
