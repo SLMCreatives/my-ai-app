@@ -5,9 +5,11 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { useRef, useState } from "react";
-//import { toast } from "sonner";
 import { Switch } from "@/components/ui/switch";
 import { Badge } from "@/components/ui/badge";
+import { toast } from "sonner";
+import { ArrowLeft } from "lucide-react";
+import Link from "next/link";
 
 // Allow streaming responses up to 30 seconds
 export const maxDuration = 30;
@@ -39,7 +41,7 @@ export default function BlogPage() {
     language: ""
   });
 
-  /* const unsecuredCopyToClipboard = (text: string) => {
+  const unsecuredCopyToClipboard = (text: string) => {
     const textArea = document.createElement("textarea");
     textArea.value = text;
     document.body.appendChild(textArea);
@@ -51,26 +53,33 @@ export default function BlogPage() {
       console.error("Unable to copy to clipboard", err);
     }
     document.body.removeChild(textArea);
-  }; */
+  };
 
   /**
    * Copies the text passed as param to the system clipboard
    * Check if using HTTPS and navigator.clipboard is available
    * Then uses standard clipboard API, otherwise uses fallback
    */
-  /* const copyToClipboard = (generation: string) => {
+  const copyToClipboard = (generation: string) => {
     if (window.isSecureContext && navigator.clipboard) {
-      navigator.clipboard.writeText(generation);
+      navigator.clipboard.writeText(JSON.stringify(generation, null, 2));
     } else {
-      unsecuredCopyToClipboard(generation);
+      unsecuredCopyToClipboard(JSON.stringify(generation, null, 2));
     }
     toast("Copied to clipboard");
-  }; */
+  };
 
   return (
-    <div className="flex flex-col w-full max-w-md py-24 mx-auto stretch justify-start px-4 md:px-10">
+    <div className="flex flex-col w-full lg:max-w-2xl py-24 pt-10 mx-auto stretch justify-start px-8 md:px-10">
       <div className=" flex flex-col gap-0">
-        <h1 className="text-2xl font-bold">UNITAR Blog Writer</h1>
+        <div className="flex flex-row justify-between items-center gap-2">
+          <h1 className="text-2xl font-bold">UNITAR Blog Writer</h1>
+          <Button variant={"ghost"} size={"icon"} className="self-end" asChild>
+            <Link href="/" className="flex items-center">
+              <ArrowLeft className="w-6 h-6" />
+            </Link>
+          </Button>
+        </div>
         {hide === false && (
           <form
             onSubmit={(e) => e.preventDefault()}
@@ -100,7 +109,7 @@ export default function BlogPage() {
                 />
               </div>
             </div>
-            <Label htmlFor="event_name">Title / Name</Label>
+            <Label htmlFor="event_name">Title</Label>
             <Input
               id="event_name"
               type="text"
@@ -111,11 +120,17 @@ export default function BlogPage() {
             <Label htmlFor="description">Brief</Label>
             <Textarea
               id="description"
+              maxLength={500}
               value={data.description}
               onChange={(e) =>
                 setData({ ...data, description: e.target.value })
               }
             />
+            {data.description.length <= 500 && (
+              <p className="-mt-2 flex text-xs text-muted-foreground w-full justify-end">
+                {data.description.length}/500 chars
+              </p>
+            )}
             <Label htmlFor="cta">CTA</Label>
             <Input
               id="cta"
@@ -135,10 +150,10 @@ export default function BlogPage() {
               />
               <Label htmlFor="Language">{language}</Label>
             </div>
-            <div className="flex flex-row gap-4 fixed bottom-10 left-1/2 transform -translate-x-1/2">
+            <div className="flex flex-row gap-2 fixed bottom-10 right-10">
               <Button
                 type="submit"
-                className=""
+                className=" order-2"
                 variant={"default"}
                 disabled={isLoading}
                 onClick={async () => {
@@ -166,15 +181,15 @@ export default function BlogPage() {
               </Button>
               <Button
                 type="submit"
-                className=""
-                variant={"default"}
+                className=" opacity-50 hover:opacity-100"
+                variant={"ghost"}
                 disabled={isLoading}
                 onClick={async () => {
                   setIsLoading(true);
                   await fetch("/api/schema", {
                     method: "POST",
                     body: JSON.stringify({
-                      prompt: `Write a student lifestyle blog post for UNITAR's digital marketing team. The blog should be engaging, creative, and concise`
+                      prompt: `Write a blog post about Onboarding September intake students at UNITAR. `
                     })
                   }).then((response) => {
                     response.json().then((json) => {
@@ -195,7 +210,7 @@ export default function BlogPage() {
             {typeof generation === "object" ? (
               <div className="flex flex-col gap-4">
                 <Label className="text-sm">Title</Label>
-                <h2 className="text-xl font-bold">{generation.title}</h2>
+                <h2 className="text-4xl font-bold">{generation.title}</h2>
                 <Label className="text-sm">Slug</Label>
                 <Input
                   type="url"
@@ -209,26 +224,35 @@ export default function BlogPage() {
                   value={generation.excerpt}
                   readOnly
                 />
-                <Label className="text-sm">Tags</Label>
+                <Label className="text-sm">Keywords</Label>
                 <div className="flex flex-row gap-2 flex-wrap">
                   {generation.tags.map((tag, index) => (
                     <Badge key={index}>{tag}</Badge>
                   ))}
                 </div>
+                <hr className="my-4" />
                 <Label className="text-sm">Body</Label>
-                <p className="text-xl prose">{generation.body}</p>
+                <div className="bg-slate-700 p-4 rounded-md">
+                  <p
+                    className="text-md whitespace-break-spaces text-white prose "
+                    contentEditable
+                    suppressContentEditableWarning={true}
+                  >
+                    {generation.body}
+                  </p>
+                </div>
               </div>
             ) : (
               <h2 className="text-xl font-bold">Generated Blog Post</h2>
             )}
 
             <div className="flex flex-row gap-2 py-4 fixed bottom-10 left-1/2 transform -translate-x-1/2">
-              {/*  <Button
+              <Button
                 variant={"default"}
-                onClick={() => copyToClipboard(generation)}
+                onClick={() => copyToClipboard(generation as string)}
               >
                 Copy
-              </Button> */}
+              </Button>
               <Button
                 onClick={() => {
                   setGeneration("");

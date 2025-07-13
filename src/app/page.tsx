@@ -31,11 +31,11 @@ export default function Home() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <Card>
             <CardHeader>
-              <CardTitle>Campus Event</CardTitle>
+              <CardTitle>Blog Post Writer</CardTitle>
             </CardHeader>
             <CardContent>
               <p className="text-md italic text-muted-foreground">
-                Write a blog post for UNITAR campus event.
+                Write a blog post for UNITAR website.
               </p>
             </CardContent>
             <CardFooter>
