@@ -120,7 +120,7 @@ export default function BlogPage() {
             <Label htmlFor="description">Brief</Label>
             <Textarea
               id="description"
-              maxLength={500}
+              maxLength={1000}
               value={data.description}
               onChange={(e) =>
                 setData({ ...data, description: e.target.value })
@@ -128,7 +128,7 @@ export default function BlogPage() {
             />
             {data.description.length <= 500 && (
               <p className="-mt-2 flex text-xs text-muted-foreground w-full justify-end">
-                {data.description.length}/500 chars
+                {data.description.length}/1000 chars
               </p>
             )}
             <Label htmlFor="cta">CTA</Label>
